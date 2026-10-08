@@ -7,12 +7,12 @@
 }
 *{box-sizing:border-box;margin:0}
 [hidden]{display:none!important}
-html,body{height:100%}
-body{background:var(--blue);color:var(--paper);font-family:var(--text);overflow:hidden;
+html,body{height:100%;height:100dvh}
+body{overscroll-behavior:none;-webkit-user-select:none;user-select:none;background:var(--blue);color:var(--paper);font-family:var(--text);overflow:hidden;
   padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   transition:background var(--fast)}
 button,input{font:inherit;color:inherit}
-button{cursor:pointer;border:0;background:none}
+button{cursor:pointer;border:0;background:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:4px solid var(--yellow);outline-offset:4px}
 .sheet :focus-visible,.burst :focus-visible,.archive :focus-visible{outline-color:var(--ink)}
 
@@ -61,7 +61,7 @@ body.sheet-open .question{transform:translateY(-4vh) scale(.94);transform-origin
 @keyframes slide{from{transform:translateY(100%)}to{transform:none}}
 .sheet-form{width:100%;max-width:1100px}
 .sheet-q{display:block;font-weight:800;font-size:1rem;margin-bottom:.5rem}
-#task-input{width:100%;background:transparent;border:0;border-bottom:6px solid var(--ink);border-radius:0;
+#task-input{-webkit-user-select:text;user-select:text;width:100%;background:transparent;border:0;border-bottom:6px solid var(--ink);border-radius:0;
   font-family:var(--display);font-size:clamp(2.4rem,9vw,7rem);text-transform:uppercase;line-height:1.05;padding:.1em 0;outline:0}
 #task-input::placeholder{color:rgba(10,10,10,.28)}
 #task-input:focus-visible{border-bottom-color:var(--blue)}
@@ -99,17 +99,39 @@ body.sheet-open .question{transform:translateY(-4vh) scale(.94);transform-origin
 .entry{flex-wrap:wrap}
 .empty{font-family:var(--display);font-size:clamp(1.6rem,4vw,3rem);color:var(--blue);border-top:6px solid var(--ink);padding-top:1rem}
 
-/* Mobile composition: plus becomes a full-width yellow slab at thumb height */
-@media (max-width:640px){
-  .question{font-size:min(21vw,16vh);max-width:none}
-  .plus{left:var(--pad);width:auto;aspect-ratio:auto;height:22vh;font-size:5rem}
-  .active-foot{flex-direction:column;align-items:stretch}
-  .done{width:100%;text-align:center}
-  .day{grid-template-columns:1fr;gap:.2rem}
-}
 @media (max-height:480px) and (orientation:landscape){
   .question{font-size:22vh}.nope h2{font-size:38vh}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+
+/* Overlays respect notches and the on-screen keyboard (--vv-h/--vv-top set in script.js) */
+.sheet,.nope,.archive{padding-top:max(var(--pad),env(safe-area-inset-top));padding-bottom:max(var(--pad),env(safe-area-inset-bottom))}
+.sheet{inset:var(--vv-top,0) 0 auto 0;height:var(--vv-h,100%)}
+
+/* Mobile: designed for one thumb. Content up top, every action in the bottom reach zone. */
+@media (max-width:640px){
+  :root{--pad:18px}
+  .bar{padding-bottom:0}
+  .mark{font-size:1.3rem}
+  .link{min-height:48px;display:inline-flex;align-items:center}
+  .mini-plus{width:48px;height:48px}
+  .view{padding-top:84px}
+  .question{font-size:min(22.5vw,17vh);max-width:none;line-height:.86}
+  .plus{left:var(--pad);right:var(--pad);bottom:max(var(--pad),env(safe-area-inset-bottom));width:auto;aspect-ratio:auto;
+    height:clamp(96px,22dvh,170px);font-size:5.5rem}
+  .plus:hover{transform:none}
+  .view-idle,.view-active{padding-bottom:max(var(--pad),env(safe-area-inset-bottom))}
+  .active-foot{flex-direction:column;align-items:stretch;gap:.9rem}
+  .timer{font-size:clamp(3rem,16vw,5rem)}
+  .done{width:100%;height:clamp(88px,18dvh,150px);display:flex;align-items:center;justify-content:center;font-size:clamp(2.6rem,12vw,4rem);padding:0}
+  .sheet{align-items:flex-end}
+  .sheet-row{flex-direction:column;align-items:stretch;gap:.5rem}
+  .start{width:100%;height:72px;font-size:2.4rem;padding:0}
+  .link.light{justify-content:center}
+  .nope h2{font-size:min(38vw,42dvh)}
+  .back{width:100%;height:80px;font-size:2.2rem;padding:0;align-self:stretch}
+  .day{grid-template-columns:1fr;gap:.2rem}
+  .archive h2{font-size:clamp(3rem,17vw,5rem)}
 }
