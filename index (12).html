@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Right Now</title>
+<meta name="description" content="One thing. That's it.">
+<meta name="theme-color" content="#1B38F5">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-state="idle">
+<header class="bar">
+  <a class="mark" href="./" aria-label="Right Now"><span>RIGHT</span><b>NOW</b></a>
+  <nav class="bar-actions">
+    <button class="link" id="open-history" type="button">Archive</button>
+    <button class="mini-plus" id="mini-plus" type="button" aria-label="New task">+</button>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="view view-idle" aria-labelledby="question">
+    <h1 id="question" class="question">WHAT ARE YOU DOING<br>RIGHT NOW?</h1>
+    <button class="plus" id="plus" type="button" aria-label="Start a new task">＋</button>
+  </section>
+
+  <section class="view view-active" aria-labelledby="task-title" aria-live="off">
+    <p class="kicker">RIGHT NOW</p>
+    <h2 id="task-title" class="task"></h2>
+    <div class="active-foot">
+      <p class="timer" id="timer" role="timer" aria-label="Elapsed time">00:00:00</p>
+      <button class="done" id="done" type="button"><span aria-hidden="true">✓</span> DONE</button>
+    </div>
+  </section>
+</main>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-q" hidden>
+  <form class="sheet-form" id="task-form" autocomplete="off">
+    <label id="sheet-q" for="task-input" class="sheet-q">What are you doing right now?</label>
+    <input id="task-input" maxlength="120" required placeholder="Type it." spellcheck="false">
+    <div class="sheet-row">
+      <button class="start" type="submit">START</button>
+      <button class="link light" type="button" id="cancel">Esc / Cancel</button>
+    </div>
+  </form>
+</div>
+
+<div class="nope" id="nope" role="alertdialog" aria-labelledby="nope-t" aria-describedby="nope-d" hidden>
+  <h2 id="nope-t">NOPE.</h2>
+  <p id="nope-d">You're already doing something.<br>Finish it first.</p>
+  <button class="back" id="back" type="button">BACK TO IT →</button>
+</div>
+
+<div class="burst" id="burst" aria-hidden="true"><span>DONE.</span></div>
+
+<aside class="archive" id="archive" role="dialog" aria-modal="true" aria-labelledby="archive-t" hidden>
+  <div class="archive-head">
+    <h2 id="archive-t">WHAT YOU'VE DONE</h2>
+    <button class="link dark" id="close-history" type="button">Close</button>
+  </div>
+  <div id="archive-body"></div>
+</aside>
+
+<script src="script.js"></script>
+</body>
+</html>
