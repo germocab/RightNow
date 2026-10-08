@@ -40,7 +40,7 @@
   function fitTask() {
     const box = el.task;
     if (!box.textContent) return;
-    const max = Math.min(innerWidth * 0.3, innerHeight * 0.5);
+    const max = innerWidth < 640 ? Math.min(innerWidth * 0.5, innerHeight * 0.4) : Math.min(innerWidth * 0.3, innerHeight * 0.5);
     let size = max;
     box.style.fontSize = size + 'px';
     while ((box.scrollHeight > box.clientHeight + 1 || box.scrollWidth > box.clientWidth + 1) && size > 28) {
@@ -211,6 +211,18 @@
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
+
+  // Keep the input sheet above the on-screen keyboard
+  if (window.visualViewport) {
+    const syncViewport = () => {
+      const vv = visualViewport, root = document.documentElement.style;
+      root.setProperty('--vv-h', vv.height + 'px');
+      root.setProperty('--vv-top', vv.offsetTop + 'px');
+    };
+    visualViewport.addEventListener('resize', syncViewport);
+    visualViewport.addEventListener('scroll', syncViewport);
+    syncViewport();
+  }
 
   document.fonts && document.fonts.ready.then(fitTask);
   render();
